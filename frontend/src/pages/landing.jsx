@@ -10,20 +10,13 @@ export default function LandingPage() {
           <h2>Video Call</h2>
         </div>
         <div className="navlist">
-          <p
+          <div
             onClick={() => {
               router("/e55rh");
             }}
           >
             Join as Guest
-          </p>
-          <p
-            onClick={() => {
-              router("/auth");
-            }}
-          >
-            Register
-          </p>
+          </div>
           <div
             onClick={() => {
               router("/auth");
@@ -31,6 +24,13 @@ export default function LandingPage() {
             role="button"
           >
             Login
+          </div>
+          <div
+            onClick={() => {
+              router("/auth");
+            }}
+          >
+            Register
           </div>
         </div>
       </nav>

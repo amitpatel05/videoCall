@@ -11,7 +11,6 @@ import MicOffIcon from "@mui/icons-material/MicOff";
 import ScreenShareIcon from "@mui/icons-material/ScreenShare";
 import StopScreenShareicon from "@mui/icons-material/StopScreenShare";
 import ChatIcon from "@mui/icons-material/Chat";
-import "../styles/videoComponent.css";
 import server from "../environment";
 import { useNavigate } from "react-router-dom";
 
@@ -108,6 +107,28 @@ export default function VideoMeetComponent() {
     getPermissions();
   }, [getPermissions]);
 
+  let silence = useCallback(() => {
+    let ctx = new AudioContext();
+    let oscillator = ctx.createOscillator();
+
+    let dst = oscillator.connect(ctx.createMediaStreamDestination());
+
+    oscillator.start();
+    ctx.resume();
+    return Object.assign(dst.stream.getAudioTracks()[0], { enabled: false });
+  }, []);
+
+  let black = useCallback(({ width = 640, height = 480 } = {}) => {
+    let canvas = Object.assign(document.createElement("canvas"), {
+      width,
+      height,
+    });
+
+    canvas.getContext("2d").fillRect(0, 0, width, height);
+    let stream = canvas.captureStream();
+    return Object.assign(stream.getVideoTracks()[0], { enabled: false });
+  }, []);
+
   let getUserMediaSuccess = useCallback(
     (stream) => {
       try {
@@ -122,7 +143,9 @@ export default function VideoMeetComponent() {
       for (let id in connections) {
         if (id === socketIdRef.current) continue;
 
-        connections[id].addStream(window.localStream);
+        window.localStream.getTracks().forEach((track) => {
+          connections[id].addTrack(track, window.localStream);
+        });
 
         connections[id].createOffer().then((description) => {
           connections[id]
@@ -157,7 +180,9 @@ export default function VideoMeetComponent() {
             localVideoRef.current.srcObject = window.localStream;
 
             for (let id in connections) {
-              connections[id].addStream(window.localStream);
+              window.localStream.getTracks().forEach((track) => {
+                connections[id].addTrack(track, window.localStream);
+              });
               connections[id].createOffer().then((description) => {
                 connections[id]
                   .setLocalDescription(description)
@@ -176,28 +201,6 @@ export default function VideoMeetComponent() {
     },
     [black, silence],
   );
-
-  let silence = useCallback(() => {
-    let ctx = new AudioContext();
-    let oscillator = ctx.createOscillator();
-
-    let dst = oscillator.connect(ctx.createMediaStreamDestination());
-
-    oscillator.start();
-    ctx.resume();
-    return Object.assign(dst.stream.getAudioTracks()[0], { enabled: false });
-  }, []);
-
-  let black = useCallback(({ width = 640, height = 480 } = {}) => {
-    let canvas = Object.assign(document.createElement("canvas"), {
-      width,
-      height,
-    });
-
-    canvas.getContext("2d").fillRect(0, 0, width, height);
-    let stream = canvas.captureStream();
-    return Object.assign(stream.getVideoTracks()[0], { enabled: false });
-  }, []);
 
   let getUserMedia = useCallback(() => {
     if ((video && videoAvailable) || (audio && audioAvailable)) {
@@ -302,33 +305,26 @@ export default function VideoMeetComponent() {
             }
           };
 
-          connections[socketListId].onaddstream = (event) => {
+          connections[socketListId].ontrack = (event) => {
             let videoExists = videoRef.current.find(
               (video) => video.socketId === socketListId,
             );
 
             if (videoExists) {
-              setVideo((videos) => {
-                const updatedVideos = videos.map((video) =>
+              setVideos((videos) =>
+                videos.map((video) =>
                   video.socketId === socketListId
-                    ? { ...video, stream: event.stream }
+                    ? { ...video, stream: event.streams[0] }
                     : video,
-                );
-                videoRef.current = updatedVideos;
-                return updatedVideos;
-              });
+                ),
+              );
             } else {
               let newVideo = {
                 socketId: socketListId,
-                stream: event.stream,
-                autoPlay: true,
-                playsinline: true,
+                stream: event.streams[0],
               };
 
-              setVideos((videos) => {
-                const updatedVideos = [...videos, newVideo];
-                return updatedVideos;
-              });
+              setVideos((videos) => [...videos, newVideo]);
             }
           };
 
@@ -405,7 +401,9 @@ export default function VideoMeetComponent() {
       for (let id in connections) {
         if (id === socketIdRef.current) continue;
 
-        connections[id].addStream(window.localStream);
+        window.localStream.getTracks().forEach((track) => {
+          connections[id].addTrack(track, window.localStream);
+        });
         connections[id].createOffer().then((description) => [
           connections[id].setLocalDescription(description).then(() => {
             socketRef.current.emit(
@@ -562,7 +560,7 @@ export default function VideoMeetComponent() {
               <></>
             )}
 
-            <Badge badgeContent={newMessages} max={999} color="secondary">
+            <Badge badgeContent={newMessages} max={999} color="primary">
               <IconButton
                 onClick={() => setModal(!showModal)}
                 style={{ color: "white" }}
@@ -576,6 +574,7 @@ export default function VideoMeetComponent() {
             className={styles.meetUserVideo}
             ref={localVideoRef}
             autoPlay
+            playsInline
             muted
           ></video>
 
@@ -590,6 +589,7 @@ export default function VideoMeetComponent() {
                     }
                   }}
                   autoPlay
+                  playsInline
                 ></video>
               </div>
             ))}

@@ -3,12 +3,12 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import server from "../environment";
 import httpStatus from "http-status";
-import { AuthContext } from "./AuthContextObject";
+import { AuthContextObject } from "./AuthContextObject";
 
 const client = axios.create({ baseURL: `${server}/api/v1/users` });
 
 export const AuthProvider = ({ children }) => {
-  const authContext = useContext(AuthContext);
+  const authContext = useContext(AuthContextObject);
 
   const [userData, setUserData] = useState(authContext);
 
@@ -75,5 +75,11 @@ export const AuthProvider = ({ children }) => {
     handleLogin,
   };
 
-  return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContextObject.Provider value={data}>
+      {children}
+    </AuthContextObject.Provider>
+  );
 };
+
+export default AuthContextObject;

@@ -1,26 +1,24 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// eslint-disable-next-line no-unused-vars
 const withAuth = (WrappedComponent) => {
   const AuthComponent = (props) => {
-    const router = useNavigate();
-
-    const isAuthenticated = () => {
-      if (localStorage.getItem("token")) {
-        return true;
-      }
-      return false;
-    };
+    const navigate = useNavigate();
 
     useEffect(() => {
-      if (!isAuthenticated()) {
-        router("/auth");
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        navigate("/auth", { replace: true });
       }
-    }, []);
+    }, [navigate]);
 
     return <WrappedComponent {...props} />;
   };
+
+  AuthComponent.displayName = `WithAuth(${
+    WrappedComponent.displayName || WrappedComponent.name || "Component"
+  })`;
 
   return AuthComponent;
 };

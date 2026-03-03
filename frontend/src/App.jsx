@@ -5,8 +5,10 @@ import Authentication from "./pages/authentication";
 import { AuthProvider } from "./contexts/AuthContext";
 import VideoMeetComponent from "./pages/videoMeet";
 import HomeComponent from "./pages/home";
+import withAuth from "./utils/withAuth";
 import History from "./pages/history";
-// import VideoMeetComponent from "./pages/VideoMeet";
+
+const ProtectedHome = withAuth(HomeComponent);
 
 function App() {
   return (
@@ -18,7 +20,7 @@ function App() {
 
             <Route path="/auth" element={<Authentication />} />
 
-            <Route path="/home" element={<HomeComponent />} />
+            <Route path="/home" element={<ProtectedHome />} />
 
             <Route path="/history" element={<History />} />
 

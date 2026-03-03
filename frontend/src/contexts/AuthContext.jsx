@@ -1,9 +1,9 @@
+/* eslint-disable no-useless-catch */
 import axios from "axios";
-import { createContext, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import server from "../environment";
-
-export const AuthContext = createContext({});
+import httpStatus from "http-status";
+import { AuthContext } from "./AuthContextObject";
 
 const client = axios.create({ baseURL: `${server}/api/v1/users` });
 
@@ -12,10 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   const [userData, setUserData] = useState(authContext);
 
-  const router = useNavigate();
-
   const handleRegister = async (name, username, password) => {
-    // eslint-disable-next-line no-useless-catch
     try {
       let request = await client.post("/register", {
         name: name,
@@ -31,7 +28,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const handleLogin = async (username, password) => {
-    // eslint-disable-next-line no-useless-catch
     try {
       let request = await client.post("/login", {
         username: username,
@@ -46,7 +42,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getHistoryOfUser = async () => {
-    // eslint-disable-next-line no-useless-catch
     try {
       let request = await client.get("/get_all_activity", {
         params: {
@@ -60,7 +55,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const addToUserHistory = async (meetingCode) => {
-    // eslint-disable-next-line no-useless-catch
     try {
       let request = await client.post("/add_to_activity", {
         token: localStorage.getItem("token"),

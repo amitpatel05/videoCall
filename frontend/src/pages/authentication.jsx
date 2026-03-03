@@ -14,28 +14,27 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AuthContext } from "../contexts/AuthContext";
 import Snackbar from "@mui/material/Snackbar";
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Authentication() {
-  const [username, setUsername] = React.useState;
-  const [password, setpassword] = React.useState;
-  const [name, setName] = React.useState;
-  const [error, setError] = React.useState;
-  const [message, setMessage] = React.useState;
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [error, setError] = React.useState("");
+  const [message, setMessage] = React.useState("");
 
   const [formState, setFormState] = React.useState(0);
 
   const [open, setOpen] = React.useState(false);
 
-  const {handleRegister, handleLogin} = React.useContext(AuthContext);
+  const { handleRegister, handleLogin } = React.useContext(AuthContext);
 
   let handleAuth = async () => {
     try {
-      if(formState === 0) {
-        let result 
+      if (formState === 0) {
+        await handleLogin(username, password);
       }
-      if{formState === 1} {
+      if (formState === 1) {
         let result = await handleRegister(name, username, password);
         console.log(result);
         setUsername("");
@@ -45,11 +44,11 @@ export default function Authentication() {
         setFormState(0);
         setPassword("");
       }
-    } catch(err) {
-      let message = (err.response.data.message);
+    } catch (err) {
+      let message = err.response.data.message;
       setError(message);
     }
-  }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -132,7 +131,7 @@ export default function Authentication() {
                 name="username"
                 value={username}
                 autoFocus
-                onChange={(e) => setusername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
               />
 
               <TextField
@@ -147,7 +146,7 @@ export default function Authentication() {
                 onChange={(e) => setPassword(e.target.value)}
               />
 
-              <p style={{color: "red"}}>{error}</p>
+              <p style={{ color: "red" }}>{error}</p>
 
               <Button
                 type="button"

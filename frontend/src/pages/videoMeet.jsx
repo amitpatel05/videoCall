@@ -59,25 +59,13 @@ export default function VideoMeetComponent() {
 
   const getPermissions = useCallback(async () => {
     try {
-      const videoPermission = await navigator.mediaDevices.getUserMedia({
+      const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
-      });
-
-      if (videoPermission) {
-        setVideoAvailable(true);
-      } else {
-        setVideoAvailable(false);
-      }
-
-      const audioPermission = await navigator.mediaDevices.getUserMedia({
         audio: true,
       });
 
-      if (audioPermission) {
-        setAudioAvailable(true);
-      } else {
-        setAudioAvailable(false);
-      }
+      setVideoAvailable(true);
+      setAudioAvailable(true);
 
       if (navigator.mediaDevices.getDisplayMedia) {
         setScreenAvailable(true);
@@ -85,23 +73,18 @@ export default function VideoMeetComponent() {
         setScreenAvailable(false);
       }
 
-      if (videoAvailable || audioAvailable) {
-        const userMediaStream = await navigator.mediaDevices.getUserMedia({
-          video: videoAvailable,
-          audio: audioAvailable,
-        });
+      window.localStream = stream;
 
-        if (userMediaStream) {
-          window.localStream = userMediaStream;
-          if (localVideoRef.current) {
-            localVideoRef.current.srcObject = userMediaStream;
-          }
-        }
+      if (localVideoRef.current) {
+        localVideoRef.current.srcObject = stream;
       }
     } catch (err) {
       console.log(err);
+      alert("Please allow Camera and Microphone permission in browser");
+      setVideoAvailable(false);
+      setAudioAvailable(false);
     }
-  }, [videoAvailable, audioAvailable]);
+  }, []);
 
   useEffect(() => {
     getPermissions();
@@ -240,7 +223,7 @@ export default function VideoMeetComponent() {
                   connections[fromId]
                     .setLocalDescription(description)
                     .then(() => {
-                      socketIdRef.current.emit(
+                      socketRef.current.emit(
                         "signal",
                         fromId,
                         JSON.stringify({
@@ -603,7 +586,7 @@ export default function VideoMeetComponent() {
             </IconButton>
 
             {screenAvailable === true ? (
-              <IconButton onClick={handleScreen}>
+              <IconButton onClick={handleScreen} style={{ color: "white" }}>
                 {screen === true ? (
                   <ScreenShareIcon />
                 ) : (

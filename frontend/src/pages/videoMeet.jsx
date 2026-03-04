@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useState, useRef } from "react";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 import { Badge, IconButton, TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import styles from "../styles/videoComponent.module.css";
@@ -151,7 +151,7 @@ export default function VideoMeetComponent() {
           connections[id]
             .setLocalDescription(description)
             .then(() => {
-              socketIdRef.current.emit(
+              socketRef.current.emit(
                 "signal",
                 id,
                 JSON.stringify({ sdp: connections[id].localDescription }),
@@ -276,7 +276,11 @@ export default function VideoMeetComponent() {
   };
 
   let connectToSocketServer = () => {
-    socketRef.current = io.connect(server_url, { secure: false });
+    socketRef.current = io(server_url, {
+      transports: ["websocket", "polling"],
+      secure: true,
+      withCredentials: true,
+    });
 
     socketRef.current.on("signal", gotMessageFromServer);
 
@@ -329,12 +333,17 @@ export default function VideoMeetComponent() {
           };
 
           if (window.localStream !== undefined && window.localStream !== null) {
-            connections[socketListId].addStream(window.localStream);
+            window.localStream.getTracks().forEach((track) => {
+              connections[socketListId].addTrack(track, window.localStream);
+            });
           } else {
             let blackSilence = (...args) =>
               new MediaStream([black(...args), silence()]);
             window.localStream = blackSilence();
-            connections[socketListId].addStream(window.localStream);
+
+            window.localStream.getTracks().forEach((track) => {
+              connections[socketListId].addTrack(track, window.localStream);
+            });
           }
         });
 
@@ -343,7 +352,9 @@ export default function VideoMeetComponent() {
             if (id2 === socketIdRef.current) continue;
 
             try {
-              connections[id2].addStream(window.localStream);
+              window.localStream.getTracks().forEach((track) => {
+                connections[id2].addTrack(track, window.localStream);
+              });
             } catch (e) {
               console.log(e);
             }
@@ -404,17 +415,18 @@ export default function VideoMeetComponent() {
         window.localStream.getTracks().forEach((track) => {
           connections[id].addTrack(track, window.localStream);
         });
-        connections[id].createOffer().then((description) => [
-          connections[id].setLocalDescription(description).then(() => {
-            socketRef.current.emit(
-              "signal",
-              id,
-              JSON.stringify({ sdp: connections[id].localDescription }).catch(
-                (e) => console.log(e),
-              ),
-            );
-          }),
-        ]);
+        connections[id]
+          .createOffer()
+          .then((description) => {
+            connections[id].setLocalDescription(description).then(() => {
+              socketRef.current.emit(
+                "signal",
+                id,
+                JSON.stringify({ sdp: connections[id].localDescription }),
+              );
+            });
+          })
+          .catch((e) => console.log(e));
       }
 
       stream.getTracks().forEach(
@@ -483,7 +495,7 @@ export default function VideoMeetComponent() {
     <div>
       {askForUsername === true ? (
         <div>
-          <h2>Enter into Lobby</h2>
+          <img src="/logo.png" alt="Logo" className="logo" />
           <TextField
             id="outlined-basic"
             label="Username"
@@ -504,7 +516,23 @@ export default function VideoMeetComponent() {
           {showModal ? (
             <div className={styles.chatRoom}>
               <div className={styles.chatContainer}>
-                <h1>Chats</h1>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                  }}
+                >
+                  <img
+                    src="/logo.png"
+                    alt="Logo"
+                    style={{ height: "4rem" }}
+                    className="logo"
+                  />
+                  <h2>Chats</h2>
+                </div>
+
                 <div className={styles.chattingDisplay}>
                   {messages.length > 0 ? (
                     messages.map((item, index) => {
@@ -516,20 +544,46 @@ export default function VideoMeetComponent() {
                       );
                     })
                   ) : (
-                    <p>No Messages Yet</p>
+                    <h3 style={{ color: "rgba(0, 0, 0, 0.3" }}>
+                      No Messages Yet !
+                    </h3>
                   )}
                 </div>
                 <div className={styles.chattingArea}>
-                  <TextField
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    id="outlined-basic"
-                    label="Write a message..."
-                    variant="outlined"
-                  />
-                  <Button variant="contained" onClick={sendMessage}>
-                    Send
-                  </Button>
+                  <div
+                    style={{
+                      width: "23.55vw",
+                      height: "100%",
+                      borderRadius: "6px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      bottom: "1rem",
+                      gap: "7px",
+                    }}
+                  >
+                    <TextField
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      id="outlined-basic"
+                      label="Write a message..."
+                      variant="outlined"
+                      style={{
+                        width: "78%",
+                      }}
+                    />
+                    <Button
+                      variant="contained"
+                      onClick={sendMessage}
+                      style={{
+                        width: "20%",
+                        borderRadius: "3.5px",
+                        padding: "0.97rem",
+                      }}
+                    >
+                      Send
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

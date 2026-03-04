@@ -7,17 +7,15 @@ let timeOnline = {};
 export const connectToSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "*",
+      origin: ["http://localhost:5173", "https://videocall-a9i6.onrender.com"],
       methods: ["GET", "POST"],
-      allowedHeaders: ["*"],
-      credentials: true,
     },
   });
 
   io.on("connection", (socket) => {
     socket.on("join-call", (path) => {
       if (connections[path] === undefined) {
-        connection[path] = [];
+        connections[path] = [];
       }
       connections[path].push(socket.id);
 
@@ -44,7 +42,7 @@ export const connectToSocket = (server) => {
     });
 
     socket.on("signal", (toId, message) => {
-      io.on(toId).emit("signal", socket.id, message);
+      io.to(toId).emit("signal", socket.id, message);
     });
 
     socket.on("chat-message", (data, sender) => {
@@ -78,7 +76,7 @@ export const connectToSocket = (server) => {
     });
 
     socket.on("disconnect", () => {
-      var diffTime = Math.abs(timeOnline[socket.io] - new Date());
+      var diffTime = Math.abs(timeOnline[socket.id] - new Date());
 
       var key;
 

@@ -8,22 +8,27 @@
 }
 
 .landingPageContainer nav {
-  padding-inline: 1.2rem;
-  padding-block: 1.6rem;
+  padding-inline: 1.1rem;
+  padding-block: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.landingPageContainer nav h2 {
-  font-size: 1.8rem;
-  font-weight: 600;
-}
-
 .landingPageContainer nav .navlist {
   display: flex;
-  gap: 1.6rem;
+  gap: 2.5rem;
   cursor: pointer;
+}
+
+.landingPageContainer nav .navlist div {
+  background-color: rgb(255, 255, 255, 0.1);
+  border-radius: 10rem;
+  padding: 1.1rem;
+}
+
+.landingPageContainer nav .navlist div:hover {
+  background-color: rgb(255, 255, 255, 0.2);
 }
 
 .landingMainContainer {
@@ -61,7 +66,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-inline: 20px;
+  padding-inline: 15px;
   text-align: center;
 }
 
@@ -80,6 +85,7 @@
 }
 
 .rightPanel {
+  height: 100%;
   display: flex;
   align-items: center;
 }
@@ -88,4 +94,10 @@
   width: 30vw;
   height: auto;
   border-radius: 20px;
+}
+
+.logo {
+  height: 6.6rem;
+  max-width: 120px;
+  object-fit: contain;
 }

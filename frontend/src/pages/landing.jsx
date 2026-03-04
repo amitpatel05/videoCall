@@ -7,7 +7,7 @@ export default function LandingPage() {
     <div className="landingPageContainer">
       <nav>
         <div className="navHeader">
-          <h2>Video Call</h2>
+          <img src="/logo.png" alt="Logo" className="logo" />
         </div>
         <div className="navlist">
           <div
@@ -46,7 +46,7 @@ export default function LandingPage() {
           </div>
         </div>
         <div>
-          <img src="/mobile.png" alt="mobiles" />
+          <img src="/mobile.png" alt="Mobile" />
         </div>
       </div>
     </div>

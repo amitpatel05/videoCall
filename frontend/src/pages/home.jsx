@@ -20,25 +20,24 @@ function HomeComponent() {
   return (
     <>
       <div className="navBar">
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <h2>Video Call</h2>
-        </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <img src="/logo.png" alt="Logo" className="logo" />
+        <div style={{ right: "0", width: "10vw" }}>
           <IconButton
             onClick={() => {
               navigate("/history");
             }}
+            style={{ fontSize: "1.2rem" }}
           >
-            <RestoreIcon />
+            <RestoreIcon style={{ fontSize: "1.2rem" }} />
+            <p>History</p>
           </IconButton>
-          <p>History</p>
           <Button
             onClick={() => {
               localStorage.removeItem("token");
               navigate("/auth");
             }}
           >
-            Logout
+            <p style={{ fontSize: "0.98rem", color: "red" }}>Logout {">"}</p>
           </Button>
         </div>
       </div>

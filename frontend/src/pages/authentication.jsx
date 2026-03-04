@@ -50,7 +50,7 @@ export default function Authentication() {
         setPassword("");
       }
     } catch (err) {
-      let message = err.response.data.message;
+      let message = err?.response?.data?.message || "Server Error";
       setError(message);
     }
   };
@@ -78,16 +78,22 @@ export default function Authentication() {
           elevation={6}
           square
         >
+          <img
+            src="/logo.png"
+            alt="Logo"
+            className="logo"
+            style={{ marginLeft: "1rem" }}
+          />
           <Box
             sx={{
-              my: 8,
-              mx: 4,
+              my: 5,
+              mx: 6,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <Avatar sx={{ mb: 5, bgcolor: "primary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
 
@@ -110,7 +116,7 @@ export default function Authentication() {
               </Button>
             </div>
 
-            <Box component="form" noValidate sx={{ mt: 1 }}>
+            <Box component="form" noValidate sx={{ mt: 2 }}>
               {formState === 1 ? (
                 <TextField
                   margin="normal"

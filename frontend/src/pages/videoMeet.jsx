@@ -477,23 +477,54 @@ export default function VideoMeetComponent() {
   return (
     <div>
       {askForUsername === true ? (
-        <div>
-          <img src="/logo.png" alt="Logo" className="logo" />
-          <TextField
-            id="outlined-basic"
-            label="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            variant="outlined"
-          />
-          <Button variant="contained" onClick={connect}>
-            Connect
-          </Button>
-
-          <div>
-            <video ref={localVideoRef} autoPlay muted></video>
+        <nav>
+          <div className="homeNav">
+            <img src="/logo.png" alt="Logo" className="logo" />
+            <div className={styles.textfield}>
+              <TextField
+                id="outlined-basic"
+                label="Your name*"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                variant="outlined"
+                style={{
+                  width: "78%",
+                }}
+              />
+              <Button
+                variant="contained"
+                onClick={connect}
+                style={{
+                  width: "40%",
+                  borderRadius: "3.5px",
+                  padding: "0.97rem",
+                }}
+              >
+                Connect
+              </Button>
+            </div>
           </div>
-        </div>
+
+          <div
+            style={{
+              height: "auto",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <video
+              ref={localVideoRef}
+              autoPlay
+              muted
+              style={{
+                borderRadius: "0.5rem",
+                height: "70vh",
+                width: "auto",
+                marginTop: "1rem",
+              }}
+            ></video>
+          </div>
+        </nav>
       ) : (
         <div className={styles.meetVideoContainer}>
           {showModal ? (
@@ -533,18 +564,7 @@ export default function VideoMeetComponent() {
                   )}
                 </div>
                 <div className={styles.chattingArea}>
-                  <div
-                    style={{
-                      width: "23.55vw",
-                      height: "100%",
-                      borderRadius: "6px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      bottom: "1rem",
-                      gap: "7px",
-                    }}
-                  >
+                  <div className={styles.textfield}>
                     <TextField
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
@@ -578,11 +598,11 @@ export default function VideoMeetComponent() {
             <IconButton onClick={handleVideo} style={{ color: "white" }}>
               {video === true ? <VideocamIcon /> : <VideocamOffIcon />}
             </IconButton>
-            <IconButton onClick={handleEndCall} style={{ color: "red" }}>
-              <CallEndIcon />
-            </IconButton>
             <IconButton onClick={handleAudio} style={{ color: "white" }}>
               {audio === true ? <MicIcon /> : <MicOffIcon />}
+            </IconButton>
+            <IconButton onClick={handleEndCall} style={{ color: "red" }}>
+              <CallEndIcon />
             </IconButton>
 
             {screenAvailable === true ? (

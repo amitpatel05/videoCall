@@ -1,27 +1,19 @@
 .meetVideoContainer {
   position: relative;
+  display: flex;
+  justify-content: center;
   height: 100vh;
-  background: rgb(47, 47, 47);
+  background: rgb(41, 41, 41);
 }
 
 .meetUserVideo {
   position: absolute;
-  bottom: 10vh;
-  height: 20vh;
-  width: auto;
   left: 0;
-  border-radius: 20px;
-}
-
-.buttonContainers {
-  position: absolute;
-  width: 100vw;
-  bottom: 0;
-  text-align: center;
-}
-
-.buttonContainers svg {
-  font-size: 3rem;
+  bottom: 10vh;
+  width: auto;
+  height: 25vh;
+  border-radius: 0.6rem;
+  margin-left: 1rem;
 }
 
 .conferenceView {
@@ -31,10 +23,33 @@
 }
 
 .conferenceView video {
-  width: 40vw;
-  height: 20vh;
-  min-width: 30vh;
-  border-radius: 10px;
+  width: auto;
+  height: auto;
+  border-radius: 0.6rem;
+}
+
+.buttonContainers {
+  position: absolute;
+  width: 25vw;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  bottom: 0;
+  margin-bottom: 0.5rem;
+  border-radius: 0.6rem;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.buttonContainers svg {
+  font-size: 3.3rem;
+  padding-inline: 0.6rem;
+}
+
+.buttonContainers svg:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  padding-inline: 0.6rem;
 }
 
 .chatRoom {
@@ -56,5 +71,15 @@
 .chattingArea {
   position: absolute;
   bottom: 0;
-  z-index: 1;
+}
+
+.textfield {
+  width: 20vw;
+  height: 100%;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 1rem;
+  gap: 7px;
 }

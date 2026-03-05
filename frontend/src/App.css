@@ -47,8 +47,12 @@
   background: #d97500;
   width: fit-content;
   padding: 1rem;
-  border-radius: 18px;
+  border-radius: 1rem;
   margin-top: 1.9rem;
+}
+
+.landingMainContainer > div:nth-child(1) div[role="button"]:hover {
+  background-color: rgb(255, 255, 255, 0.2);
 }
 
 .landingMainContainer > div:nth-child(1) div[role="button"] a {
@@ -66,8 +70,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-inline: 15px;
+  padding-inline: 1rem;
   text-align: center;
+}
+
+.homeNav {
+  width: 100vw;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgb(0, 0, 0, 0.2);
+  padding-inline: 1rem;
 }
 
 .meetContainer {
@@ -96,16 +110,6 @@
   border-radius: 20px;
 }
 
-.homeNav {
-  width: 100vw;
-  height: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid rgb(0, 0, 0, 0.2);
-  padding-inline: 1rem;
-}
-
 .logo {
   height: 6.6rem;
   max-width: 120px;
@@ -114,9 +118,98 @@
 
 .rightNavOptions {
   right: 0;
-  width: 17vw;
+  width: 15vw;
 }
 
 .rightNavOptionsEffect:hover {
   background-color: rgb(0, 0, 0, 0.06) !important;
+}
+
+@media (max-width: 576px) {
+  .landingPageContainer div {
+    padding-block-start: 4rem;
+  }
+  .landingPageContainer div h1 {
+    font-size: 1.7rem;
+  }
+  .landingPageContainer div p {
+    font-size: 1.2rem;
+    line-height: 3rem;
+  }
+  .landingPageContainer nav .navlist {
+    gap: 0.5rem;
+  }
+  .landingPageContainer nav .navlist div {
+    height: 2.5rem;
+    padding: 0.6rem;
+  }
+  .landingMainContainer {
+    display: block;
+    padding-inline: 1.2rem;
+    padding-block: 1.2rem;
+    height: 80vh;
+  }
+  .landingMainContainer > div:nth-child(1) div[role="button"] a {
+    font-size: 1rem;
+  }
+  .landingMainContainer > div:nth-child(1) div[role="button"] {
+    width: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3rem 0 0 7rem;
+  }
+  .landingMainContainer > div:nth-child(2) img {
+    width: 90vw;
+    height: auto;
+  }
+  nav {
+    height: 6rem;
+    padding-block: 4rem !important;
+  }
+  .logo {
+    height: 4.5rem;
+    margin-top: 1rem;
+  }
+
+  .meetContainer {
+    height: 87vh;
+    display: block;
+    padding-inline: 0.5rem;
+  }
+  .leftPanel {
+    height: 35vh;
+    padding-left: 1rem;
+  }
+  .leftPanel div h1 {
+    font-size: 1.6rem;
+  }
+  .rightPanel {
+    padding-top: 3rem;
+    height: fit-content !important;
+  }
+  .rightPanel > img {
+    width: 95vw;
+    height: fit-content;
+  }
+  .rightNavOptions {
+    right: 0;
+    width: 45vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  .rightNavOptionsEffect p {
+    font-size: 0.85rem !important;
+  }
+
+  .homeVideo {
+    width: 100vw;
+    height: 87.9vh;
+  }
+  .homeVideoVideo {
+    width: 95vw !important;
+    padding-bottom: 10rem;
+  }
 }

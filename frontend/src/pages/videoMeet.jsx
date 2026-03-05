@@ -497,22 +497,23 @@ export default function VideoMeetComponent() {
                 style={{
                   width: "40%",
                   borderRadius: "3.5px",
-                  padding: "0.97rem",
+                  padding: "1.1rem",
                 }}
               >
-                Connect
+                <span style={{ fontSize: "0.7rem" }}>Connect</span>
               </Button>
             </div>
           </div>
 
           <div
+            className="homeVideo"
             style={{
-              height: "auto",
               display: "flex",
               justifyContent: "center",
             }}
           >
             <video
+              className="homeVideoVideo"
               ref={localVideoRef}
               autoPlay
               muted
@@ -558,7 +559,13 @@ export default function VideoMeetComponent() {
                       );
                     })
                   ) : (
-                    <h3 style={{ color: "rgba(0, 0, 0, 0.3" }}>
+                    <h3
+                      style={{
+                        color: "rgba(0, 0, 0, 0.3)",
+                        paddingTop: "12rem",
+                        paddingLeft: "6rem",
+                      }}
+                    >
                       No Messages Yet !
                     </h3>
                   )}
@@ -637,7 +644,7 @@ export default function VideoMeetComponent() {
 
           <div className={styles.conferenceView}>
             {videos.map((video) => (
-              <div key={video.socketId}>
+              <div key={video.socketId} className={styles.conferenceViewVideo}>
                 <video
                   data-socket={video.socketId}
                   ref={(ref) => {

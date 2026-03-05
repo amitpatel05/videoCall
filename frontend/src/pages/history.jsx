@@ -41,8 +41,10 @@ export default function History() {
         onClick={() => {
           routeTo("/home");
         }}
+        style={{ paddingTop: "3rem" }}
       >
         <HomeIcon />
+        &nbsp;<span style={{ fontSize: "1.3rem" }}>Back to Home</span>
       </IconButton>
       {meetings.length !== 0 ? (
         meetings.map((e, i) => {

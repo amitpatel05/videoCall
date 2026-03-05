@@ -27,14 +27,16 @@ function HomeComponent() {
               navigate("/history");
             }}
             style={{
-              fontSize: "1.2rem",
+              fontSize: "1rem",
               width: "50%",
               borderRadius: "10rem",
             }}
             className="rightNavOptionsEffect"
           >
-            <RestoreIcon style={{ fontSize: "1.2rem" }} />
-            <p>&nbsp;History</p>
+            <RestoreIcon style={{ fontSize: "1.3rem" }} />
+            <p>
+              &nbsp;<span style={{ fontSize: "1rem" }}>History</span>
+            </p>
           </IconButton>
           <Button
             className="rightNavOptionsEffect"
@@ -49,8 +51,9 @@ function HomeComponent() {
           >
             <p
               style={{
-                fontSize: "0.98rem",
-                color: "red",
+                fontSize: "1rem",
+                fontWeight: "550",
+                color: "rgb(255, 50, 50)",
                 borderRadius: "10rem",
               }}
             >
@@ -62,7 +65,7 @@ function HomeComponent() {
 
       <div className="meetContainer">
         <div className="leftPanel">
-          <div style={{ marginLeft: "1.5rem" }}>
+          <div>
             <h1 style={{ fontWeight: "800", color: "rgba(0, 0, 0, 0.7" }}>
               Providing Quality Video Call Just Like Quality Education
             </h1>
@@ -70,7 +73,7 @@ function HomeComponent() {
               <TextField
                 onChange={(e) => setMeetingCode(e.target.value)}
                 id="outlined-basic"
-                label="Meeting Code"
+                label="Meeting Code*"
                 variant="outlined"
               />
               <Button onClick={handleJoinVideoCall} variant="contained">

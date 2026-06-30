@@ -83,10 +83,7 @@ function HomeComponent() {
           </div>
         </div>
 
-        <div
-          className="rightPanel"
-          style={{ marginRight: "10rem", height: "80vh", width: "auto" }}
-        >
+        <div className="rightPanel">
           <img srcSet="/logo3.png" alt="logo" />
         </div>
       </div>

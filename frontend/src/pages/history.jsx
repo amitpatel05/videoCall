@@ -49,22 +49,20 @@ export default function History() {
       {meetings.length !== 0 ? (
         meetings.map((e, i) => {
           return (
-            <>
-              <Card key={i} variant="outlined">
-                <CardContent>
-                  <Typography
-                    gutterBottom
-                    sx={{ color: "text.secondary", fontSize: 14 }}
-                  >
-                    Code : {e.meetingCode}
-                  </Typography>
+            <Card key={i} variant="outlined" style={{ margin: "1rem" }}>
+              <CardContent>
+                <Typography
+                  gutterBottom
+                  sx={{ color: "text.secondary", fontSize: 14 }}
+                >
+                  Code : {e.meetingCode}
+                </Typography>
 
-                  <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-                    Date : {formatDate(e.date)}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </>
+                <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
+                  Date : {formatDate(e.date)}
+                </Typography>
+              </CardContent>
+            </Card>
           );
         })
       ) : (

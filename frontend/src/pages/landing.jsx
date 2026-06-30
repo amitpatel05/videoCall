@@ -12,7 +12,9 @@ export default function LandingPage() {
         <div className="navlist">
           <div
             onClick={() => {
-              router("/e55rh");
+              // 🛠️ CHANGED: Static code ki jagah random 5-character code generate karein
+              const randomCode = Math.random().toString(36).substring(2, 7);
+              router(`/${randomCode}`);
             }}
           >
             Join as Guest

@@ -29,9 +29,11 @@ connectToSocket(server);
 app.set("port", process.env.PORT || 8080);
 
 const start = async () => {
-  await mongoose.connect(
-    "mongodb+srv://amitpatel05_db_user:amit05patel19@videocall.nckuk4o.mongodb.net/videoCall?retryWrites=true&w=majority",
-  );
+  const MONGO_URI =
+    process.env.MONGO_URI ||
+    "mongodb+srv://amitpatel05_db_user:amit05patel19@videocall.nckuk4o.mongodb.net/videoCall?retryWrites=true&w=majority";
+
+  await mongoose.connect(MONGO_URI);
 
   console.log("MongoDB Connected");
 
